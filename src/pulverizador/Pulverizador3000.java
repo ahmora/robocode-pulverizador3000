@@ -10,6 +10,9 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import robocode.*;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 //import java.awt.Color;
 
 // API help : http://robocode.sourceforge.net/docs/robocode/robocode/Robot.html
@@ -54,21 +57,22 @@ public class Pulverizador3000 extends Robot {
         switch (accion) {
             case 0:
                 ahead(100);
+                System.out.println(0);
                 break;
             case 1:
-                back(100);
+                back(100);System.out.println(1);
                 break;
             case 2:
-                fire(10);
+                fire(10);System.out.println(2);
                 break;
             case 3:
-                fire(2);
+                fire(2);System.out.println(3);
                 break;
             case 4:
-                turnGunRight(70);
+                turnGunRight(70);System.out.println(4);
                 break;
             case 5:
-                turnGunLeft(70);
+                turnGunLeft(70);System.out.println(5);
                 break;
 
             default:
@@ -79,6 +83,7 @@ public class Pulverizador3000 extends Robot {
     /**
      * run: Alex's default behavior
      */
+    @Override
     public void run() {
 		// Initialization of the robot should be put here
 
@@ -89,7 +94,7 @@ public class Pulverizador3000 extends Robot {
         while (true) {
             for (int i = 0; i < run.length(); i++) {
                 realizaAccion(run.charAt(i) - 48);
-                System.out.println(run.charAt(i) - 48);
+                
             }
         }
     }
@@ -97,6 +102,7 @@ public class Pulverizador3000 extends Robot {
     /**
      * onScannedRobot: What to do when you see another robot
      */
+    @Override
     public void onScannedRobot(ScannedRobotEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onScannedRobot.length(); i++) {
@@ -108,6 +114,7 @@ public class Pulverizador3000 extends Robot {
     /**
      * onHitByBullet: What to do when you're hit by a bullet
      */
+    @Override
     public void onHitByBullet(HitByBulletEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onHitByBullet.length(); i++) {
@@ -119,10 +126,28 @@ public class Pulverizador3000 extends Robot {
     /**
      * onHitWall: What to do when you hit a wall
      */
+    @Override
     public void onHitWall(HitWallEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onHitWall.length(); i++) {
             realizaAccion(onHitWall.charAt(i) - 48);
         }
+    }
+    
+    @Override
+    public void onBattleEnded(BattleEndedEvent event){
+        BattleResults results= event.getResults();
+        int score = results.getScore();
+        PrintWriter pw;
+        try {
+            pw = new PrintWriter(new FileWriter("results.txt"));
+            individuo = individuo + "," + score;
+            pw.write(individuo);
+            pw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Pulverizador3000.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
 }

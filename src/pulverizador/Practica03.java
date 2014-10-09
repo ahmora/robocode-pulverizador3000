@@ -28,7 +28,7 @@ public class Practica03 {
         engine.addBattleListener(new BattleObserver());
 
         // Show the Robocode battle view
-        engine.setVisible(true);
+        engine.setVisible(false);
         
 
          // Setup the battle specification
