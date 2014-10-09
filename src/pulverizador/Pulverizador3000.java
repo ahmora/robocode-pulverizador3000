@@ -13,6 +13,7 @@ import robocode.*;
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Random;
 //import java.awt.Color;
 
 // API help : http://robocode.sourceforge.net/docs/robocode/robocode/Robot.html
@@ -21,8 +22,9 @@ import java.io.IOException;
  */
 public class Pulverizador3000 extends Robot {
 
-    String run, onScannedRobot, onHitByBullet, onHitWall;
+    String run, onScannedRobot, onHitByBullet, onHitWall, onBulletHit, onBulletMissed, onHitRobot;
     String individuo;
+    Random random;
 
     public Pulverizador3000() {
         super();
@@ -50,6 +52,9 @@ public class Pulverizador3000 extends Robot {
         onScannedRobot = acciones[1];
         onHitByBullet = acciones[2];
         onHitWall = acciones[3];
+        onBulletHit=acciones[4];
+        onBulletMissed=acciones[5];
+        onHitRobot=acciones[6];
 
     }
 
@@ -60,21 +65,35 @@ public class Pulverizador3000 extends Robot {
                 System.out.println(0);
                 break;
             case 1:
-                back(100);System.out.println(1);
+                back(100);
                 break;
             case 2:
-                fire(10);System.out.println(2);
+                fire(10);
                 break;
             case 3:
-                fire(2);System.out.println(3);
+                fire(2);
                 break;
             case 4:
-                turnGunRight(70);System.out.println(4);
+                turnGunRight(70);
                 break;
             case 5:
-                turnGunLeft(70);System.out.println(5);
+                turnGunLeft(70);
                 break;
-
+            case 6:
+                doNothing();
+                break;
+            case 7:
+                turnRadarLeft(30);
+                break;
+            case 8:
+                turnRadarRight(50);
+                break;
+            case 9:
+                turnLeft(50);
+                break;
+            case 10:
+                turnRight(50);
+                break;
             default:
                 fire(2);
         }
@@ -147,7 +166,28 @@ public class Pulverizador3000 extends Robot {
         } catch (IOException ex) {
             Logger.getLogger(Pulverizador3000.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
     }
+    
+    @Override
+    public void onBulletHit(BulletHitEvent e){
+        for (int i = 0; i < onBulletHit.length(); i++) {
+            realizaAccion(onBulletHit.charAt(i) - 48);
+        }
+    }
+    
+     @Override
+    public void onBulletMissed(BulletMissedEvent e){
+        for (int i = 0; i < onBulletMissed.length(); i++) {
+            realizaAccion(onBulletMissed.charAt(i) - 48);
+        }
+    }
+    
+     @Override
+    public void onHitRobot(HitRobotEvent e){
+        for (int i = 0; i < onHitRobot.length(); i++) {
+            realizaAccion(onHitRobot.charAt(i) - 48);
+        }
+    }
+    
+    
 }

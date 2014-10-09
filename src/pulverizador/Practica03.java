@@ -16,7 +16,6 @@ public class Practica03 {
 
     public static void main(String[] args) {
 
-        Pulverizador3000 nuevo = new Pulverizador3000();
         // Disable log messages from Robocode
         RobocodeEngine.setLogMessagesEnabled(false);
 
@@ -74,4 +73,7 @@ class BattleObserver extends BattleAdaptor {
     public void onBattleError(BattleErrorEvent e) {
         System.out.println("Err> " + e.getError());
     }
+    
+    
+    
 }
