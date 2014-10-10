@@ -4,6 +4,8 @@ package pulverizador;
  *
  * @author Alejandro Hernandez Mora
  */
+
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
@@ -14,6 +16,8 @@ import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
+
+
 //import java.awt.Color;
 
 // API help : http://robocode.sourceforge.net/docs/robocode/robocode/Robot.html
@@ -24,26 +28,34 @@ public class Pulverizador3000 extends Robot {
 
     String run, onScannedRobot, onHitByBullet, onHitWall, onBulletHit, onBulletMissed, onHitRobot;
     String individuo;
+    double [] parametros;
     Random random;
 
     public Pulverizador3000() {
         super();
-        individuo = readIndividuo();
+        parametros = new double[35];
+        readIndividuo();
         llenaAcciones();
+        
     }
 
-    public String readIndividuo() {
+    public void readIndividuo() {
         Scanner in;
         String line = "";
         try {
             in = new Scanner(new FileReader("individuo.txt"));
             line = in.nextLine();
+            String [] vector=line.split(",");
+            System.out.println(vector.length);
+            individuo= vector[0];
+            for (int i = 0; i < parametros.length; i++) {
+                parametros[i]= Double.parseDouble(vector[i+1]);
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Pulverizador3000.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println(line);
 
-        return line;
     }
 
     public void llenaAcciones() {
@@ -78,35 +90,34 @@ public class Pulverizador3000 extends Robot {
 
     }
 
-    public void realizaAccion(int accion) {
+    public void realizaAccion(int accion, double parametro) {
         switch (accion) {
             case 0:
-                ahead(100);
-                System.out.println(0);
+                ahead(parametro);
                 break;
             case 1:
-                back(100);
+                back(parametro);
                 break;
             case 2:
-                fire(10);
+                fire(parametro);
                 break;
             case 3:
-                turnLeft(70);
+                turnLeft(parametro);
                 break;
             case 4:
-                turnRight(70);
+                turnRight(parametro);
                 break;
             case 5:
-                turnRadarLeft(30);
+                turnRadarLeft(parametro);
                 break;
             case 6:
-                turnRadarRight(50);
+                turnRadarRight(parametro);
                 break;
             case 7:
-                turnGunLeft(50);
+                turnGunLeft(parametro);
                 break;
             case 8:
-                turnGunRight(50);
+                turnGunRight(parametro);
                 break;
             default:
                 doNothing();
@@ -118,10 +129,10 @@ public class Pulverizador3000 extends Robot {
      */
     @Override
     public void run() {
-        
+        setBodyColor(Color.blue);
         while (true) {
             for (int i = 0; i < run.length(); i++) {
-                realizaAccion(run.charAt(i) - 48);
+                realizaAccion(run.charAt(i) - 48, parametros[i]);
             }
         }
     }
@@ -133,7 +144,7 @@ public class Pulverizador3000 extends Robot {
     public void onScannedRobot(ScannedRobotEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onScannedRobot.length(); i++) {
-            realizaAccion(onScannedRobot.charAt(i) - 48);
+            realizaAccion(onScannedRobot.charAt(i) - 48, parametros[i*2]);
         }
     }
 
@@ -144,7 +155,7 @@ public class Pulverizador3000 extends Robot {
     public void onHitByBullet(HitByBulletEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onHitByBullet.length(); i++) {
-            realizaAccion(onHitByBullet.charAt(i) - 48);
+            realizaAccion(onHitByBullet.charAt(i) - 48, parametros[i*3]);
         }
     }
 
@@ -155,7 +166,7 @@ public class Pulverizador3000 extends Robot {
     public void onHitWall(HitWallEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onHitWall.length(); i++) {
-            realizaAccion(onHitWall.charAt(i) - 48);
+            realizaAccion(onHitWall.charAt(i) - 48, parametros[i*4]);
         }
     }
     
@@ -164,21 +175,21 @@ public class Pulverizador3000 extends Robot {
     @Override
     public void onBulletHit(BulletHitEvent e){
         for (int i = 0; i < onBulletHit.length(); i++) {
-            realizaAccion(onBulletHit.charAt(i) - 48);
+            realizaAccion(onBulletHit.charAt(i) - 48, parametros[i*5]);
         }
     }
     
      @Override
     public void onBulletMissed(BulletMissedEvent e){
         for (int i = 0; i < onBulletMissed.length(); i++) {
-            realizaAccion(onBulletMissed.charAt(i) - 48);
+            realizaAccion(onBulletMissed.charAt(i) - 48, parametros[i*6]);
         }
     }
     
      @Override
     public void onHitRobot(HitRobotEvent e){
         for (int i = 0; i < onHitRobot.length(); i++) {
-            realizaAccion(onHitRobot.charAt(i) - 48);
+            realizaAccion(onHitRobot.charAt(i) - 48, parametros[i*7]);
         }
     }
     

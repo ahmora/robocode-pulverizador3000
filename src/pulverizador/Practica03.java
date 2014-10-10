@@ -15,19 +15,16 @@ import robocode.control.events.*;
 public class Practica03 {
 
     public static void main(String[] args) {
-        Individuo a,b,c,d;
-        int i=0;
-                while(i<100){
-        a= new Individuo();
-        b= new Individuo();
-        System.out.println(a);
-        System.out.println(b);
-        a.mutar();
-        b.mutar();
+        Individuo a= new Individuo();
+        Individuo b= new Individuo();
+        Individuo c= new Individuo();
+        Individuo d= new Individuo();
         
         System.out.println(a);
         System.out.println(b);
-                }
+        System.out.println(c);
+        System.out.println(d);
+        
         // Disable log messages from Robocode
         RobocodeEngine.setLogMessagesEnabled(false);
 
@@ -39,21 +36,24 @@ public class Practica03 {
         engine.addBattleListener(new BattleObserver());
 
         // Show the Robocode battle view
-        engine.setVisible(true);
-        
+        engine.setVisible(false);
+        int generaciones = 0;
+        while (generaciones < 3) {
+            // Setup the battle specification
+            int numberOfRounds = 5;
+            BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
+            RobotSpecification[] selectedRobots = engine.getLocalRepository("pulverizador.Pulverizador3002*,pulverizador.Pulverizador3003*,"
+                    + "pulverizador.Pulverizador3001*,pulverizador.Pulverizador3000*");
 
-         // Setup the battle specification
-        int numberOfRounds = 5;
-        BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
-        RobotSpecification[] selectedRobots = engine.getLocalRepository("sample.RamFire,sample.Corners,sample,pulverizador.Pulverizador3000*");
+            BattleSpecification battleSpec = new BattleSpecification(numberOfRounds, battlefield, selectedRobots);
 
-        BattleSpecification battleSpec = new BattleSpecification(numberOfRounds, battlefield, selectedRobots);
-
-        // Run our specified battle and let it run till it is over
-        engine.runBattle(battleSpec, true); // waits till the battle finishes
-
+            // Run our specified battle and let it run till it is over
+            engine.runBattle(battleSpec, true); // waits till the battle finishes
+            generaciones++;
+        }
         // Cleanup our RobocodeEngine
         engine.close();
+
 
         // Make sure that the Java VM is shut down properly
         System.exit(0);
