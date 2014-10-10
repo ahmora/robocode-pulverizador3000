@@ -20,13 +20,13 @@ import java.util.Random;
 /**
  * Alex - a robot by (your name here)
  */
-public class Pulverizador3000 extends Robot {
+public class Pulverizador3002 extends Robot {
 
     String run, onScannedRobot, onHitByBullet, onHitWall, onBulletHit, onBulletMissed, onHitRobot;
     String individuo;
     Random random;
 
-    public Pulverizador3000() {
+    public Pulverizador3002() {
         super();
         individuo = readIndividuo();
         llenaAcciones();
@@ -49,7 +49,6 @@ public class Pulverizador3000 extends Robot {
     public void llenaAcciones() {
         String aux = individuo.substring(0);
         int longitud_gen = aux.charAt(0) - 48;
-        
         run = aux.substring(1, longitud_gen + 1);
         aux = aux.substring(longitud_gen + 1);
         longitud_gen = aux.charAt(0) - 48;
@@ -91,22 +90,25 @@ public class Pulverizador3000 extends Robot {
                 fire(10);
                 break;
             case 3:
-                turnLeft(70);
+                fire(2);
                 break;
             case 4:
-                turnRight(70);
+                turnGunRight(70);
                 break;
             case 5:
-                turnRadarLeft(30);
+                turnGunLeft(70);
                 break;
             case 6:
-                turnRadarRight(50);
+                turnRadarLeft(30);
                 break;
             case 7:
-                turnGunLeft(50);
+                turnRadarRight(50);
                 break;
             case 8:
-                turnGunRight(50);
+                turnLeft(50);
+                break;
+            case 9:
+                turnRight(50);
                 break;
             default:
                 doNothing();
@@ -118,7 +120,12 @@ public class Pulverizador3000 extends Robot {
      */
     @Override
     public void run() {
-        
+		// Initialization of the robot should be put here
+
+		// After trying out your robot, try uncommenting the import at the top,
+        // and the next line:
+		// setColors(Color.red,Color.blue,Color.green); // body,gun,radar
+        // Robot main loop
         while (true) {
             for (int i = 0; i < run.length(); i++) {
                 realizaAccion(run.charAt(i) - 48);
@@ -135,6 +142,7 @@ public class Pulverizador3000 extends Robot {
         for (int i = 0; i < onScannedRobot.length(); i++) {
             realizaAccion(onScannedRobot.charAt(i) - 48);
         }
+        //fire(1);
     }
 
     /**
@@ -146,6 +154,7 @@ public class Pulverizador3000 extends Robot {
         for (int i = 0; i < onHitByBullet.length(); i++) {
             realizaAccion(onHitByBullet.charAt(i) - 48);
         }
+        //back(10);
     }
 
     /**
@@ -159,7 +168,20 @@ public class Pulverizador3000 extends Robot {
         }
     }
     
-    
+    @Override
+    public void onBattleEnded(BattleEndedEvent event){
+        BattleResults results= event.getResults();
+        int score = results.getScore();
+        PrintWriter pw;
+        try {
+            pw = new PrintWriter(new FileWriter("results.txt"));
+            individuo = individuo + "," + score;
+            pw.write(individuo);
+            pw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Pulverizador3000.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     @Override
     public void onBulletHit(BulletHitEvent e){
@@ -179,22 +201,6 @@ public class Pulverizador3000 extends Robot {
     public void onHitRobot(HitRobotEvent e){
         for (int i = 0; i < onHitRobot.length(); i++) {
             realizaAccion(onHitRobot.charAt(i) - 48);
-        }
-    }
-    
-    
-    @Override
-    public void onBattleEnded(BattleEndedEvent event){
-        BattleResults results= event.getResults();
-        int score = results.getScore();
-        PrintWriter pw;
-        try {
-            pw = new PrintWriter(new FileWriter("results.txt"));
-            individuo = individuo + "," + score;
-            pw.write(individuo);
-            pw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Pulverizador3000.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

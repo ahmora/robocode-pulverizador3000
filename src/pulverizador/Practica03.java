@@ -15,7 +15,19 @@ import robocode.control.events.*;
 public class Practica03 {
 
     public static void main(String[] args) {
-
+        Individuo a,b,c,d;
+        int i=0;
+                while(i<100){
+        a= new Individuo();
+        b= new Individuo();
+        System.out.println(a);
+        System.out.println(b);
+        a.mutar();
+        b.mutar();
+        
+        System.out.println(a);
+        System.out.println(b);
+                }
         // Disable log messages from Robocode
         RobocodeEngine.setLogMessagesEnabled(false);
 
@@ -27,7 +39,7 @@ public class Practica03 {
         engine.addBattleListener(new BattleObserver());
 
         // Show the Robocode battle view
-        engine.setVisible(false);
+        engine.setVisible(true);
         
 
          // Setup the battle specification
@@ -45,6 +57,7 @@ public class Practica03 {
 
         // Make sure that the Java VM is shut down properly
         System.exit(0);
+        
     }
 }
 

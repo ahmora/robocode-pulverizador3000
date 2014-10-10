@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pulverizador;
 
 import java.util.Random;
@@ -14,52 +9,79 @@ import java.util.Random;
 public class Individuo implements Comparable {
     Random r = new Random();
     double fitness;
-    String individuo;
-    int [] variables;
+    String acciones;
+    String [] parametros;
+    static int [][] rangos= {{50,500},{50,500},{0,2},{-360,360},{-360,360},{-360,360},{-360,360}};
 
     public Individuo(){
-        this.variables=new int [7];
-        for (int i = 0; i < variables.length; i++) {
-            variables[i]=r.nextInt(6)+1;
+        acciones="";
+        parametros= new String[35];
+        int accion;
+        int a,b;
+        for (int i = 0; i < 35; i++) {
+            accion= r.nextInt(7);
+            acciones+=accion;
+            a=rangos[accion][0];
+            b=rangos[accion][1];
+            parametros[i]=""+((b-a)*r.nextDouble()+a);
         }
-        individuo="";
-        for (int i = 0; i < variables.length; i++) {
-            for (int j = 0; j < variables[i]; j++) {
-                individuo+=(char)(48 +r.nextInt(10));
-            }
-            individuo+= i==variables.length? ',':"";
-        }
-    }
-    
-    public Individuo(String individuo) {
-        this.individuo = individuo;
         
     }
-
+    
+    public Individuo(String acciones, String parametros) {
+        this.acciones = acciones;
+        this.parametros= parametros.split(",");
+    }
+    
+    public Individuo(String acciones, String [] parametros) {
+        this.acciones = acciones;
+        this.parametros= parametros;
+    }
+    
+    public String [][] cruzaParametros(int inicio, int fin, String[] params){
+        String[][] hijos= new String[2][35];
+        for (int i = 0; i < inicio; i++) {
+            hijos[0][i]=this.parametros[i];
+            hijos[1][i]=params[i];
+        }
+        for (int i = inicio; i < fin; i++) {
+            hijos[0][i]=params[i];
+            hijos[1][i]=this.parametros[i];
+        }
+        for (int i = fin; i < 35; i++) {
+            hijos[0][i]=this.parametros[i];
+            hijos[1][i]=params[i];
+        }
+        
+        return hijos;
+    }
     
     public Individuo[] cruzar(Individuo a, double p_cruza){
         Individuo[] hijos = new Individuo[2];
         double p=r.nextDouble();
         if (p < p_cruza) {
-            int cruce = r.nextInt(individuo.length()), l = r.nextInt(individuo.length());
+            int cruce = r.nextInt(35), l = r.nextInt(35);
             int inicio, fin;
             if (cruce < l) {
                 inicio = cruce;
                 fin = l;
             } else {
                 inicio = l;
-                fin = l;
+                fin = cruce;
             }
-            String h2 = "", h1 = this.individuo.substring(0, inicio);
-            h1 += a.individuo.substring(inicio, fin);
-            h1 += this.individuo.substring(fin, individuo.length());
+            String[][] nuevos_parametros= cruzaParametros(inicio, fin, a.parametros);
+            String h2, h1;
+            h1= this.acciones.substring(0, inicio);
+            h1 += a.acciones.substring(inicio, fin);
+            h1 += this.acciones.substring(fin, acciones.length());
+            
 
-            h2 = a.individuo.substring(0, inicio);
-            h2 += this.individuo.substring(inicio, fin);
-            h2 += a.individuo.substring(fin, individuo.length());
+            h2 = a.acciones.substring(0, inicio);
+            h2 += this.acciones.substring(inicio, fin);
+            h2 += a.acciones.substring(fin, acciones.length());
 
-            hijos[0] = new Individuo(h1);
-            hijos[1] = new Individuo(h2);
+            hijos[0] = new Individuo(h1, nuevos_parametros[0]);
+            hijos[1] = new Individuo(h2, nuevos_parametros[1]);
             
              /*System.out.println("inicio: " + inicio+" fin: "+fin);
              System.out.println("Estos son los padres:");
@@ -77,21 +99,26 @@ public class Individuo implements Comparable {
 
     }
     
-    public void mutar(){
-        int i=r.nextInt(individuo.length());
-        char caracter= (char) (48 + r.nextInt(10));
-        while(individuo.charAt(i)==','){
-            i = r.nextInt(individuo.length());
-        }
-        individuo= individuo.substring(0,i)+caracter+individuo.substring(i+1);
+    public void mutar() {
+        int i = r.nextInt(35);
+        char caracter = (char) (48 + r.nextInt(7));
+        acciones = acciones.substring(0, i) + caracter + acciones.substring(i + 1);
+        int j=(i/7)+(i%5);
+        System.out.println(j);
+        parametros[i]=""+((rangos[j][1]-rangos[j][0])*r.nextDouble()+rangos[j][0]);
     }
     
     @Override 
     public String toString(){
-        return individuo;
+        String s="\n";
+        for (int i = 0; i < 35; i++) {
+            s+=parametros[i];
+            s+= i==34? "":",";
+        }
+        return acciones+s;
     }
     public boolean equalsTo(Individuo a){
-        int comp=this.individuo.compareTo(a.individuo);
+        int comp=this.acciones.compareTo(a.acciones);
         return comp==0;
     }
     public void imprime(){
@@ -108,8 +135,10 @@ public class Individuo implements Comparable {
 
     }
     
-     
-    
   
     //FIN de las funciones de la suite de De Jong
+
+    double getFitness() {
+        return fitness;
+    }
 }
