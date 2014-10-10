@@ -47,14 +47,33 @@ public class Pulverizador3000 extends Robot {
     }
 
     public void llenaAcciones() {
-        String[] acciones = individuo.split(",");
-        run = acciones[0];
-        onScannedRobot = acciones[1];
-        onHitByBullet = acciones[2];
-        onHitWall = acciones[3];
-        onBulletHit=acciones[4];
-        onBulletMissed=acciones[5];
-        onHitRobot=acciones[6];
+        String aux = individuo.substring(0);
+        int longitud_gen = aux.charAt(0) - 48;
+        run = aux.substring(1, longitud_gen + 1);
+        aux = aux.substring(longitud_gen + 1);
+        longitud_gen = aux.charAt(0) - 48;
+
+        onScannedRobot = aux.substring(1, longitud_gen + 1);
+        aux = aux.substring(longitud_gen + 1);
+        longitud_gen = aux.charAt(0) - 48;
+
+        onHitByBullet = aux.substring(1, longitud_gen + 1);
+        aux = aux.substring(longitud_gen + 1);
+        longitud_gen = aux.charAt(0) - 48;
+
+        onHitWall = aux.substring(1, longitud_gen + 1);
+        aux = aux.substring(longitud_gen + 1);
+        longitud_gen = aux.charAt(0) - 48;
+
+        onBulletHit = aux.substring(1, longitud_gen + 1);
+        aux = aux.substring(longitud_gen + 1);
+        longitud_gen = aux.charAt(0) - 48;
+
+        onBulletMissed = aux.substring(1, longitud_gen + 1);
+        aux = aux.substring(longitud_gen + 1);
+        longitud_gen = aux.charAt(0) - 48;
+
+        onHitRobot = aux.substring(1, longitud_gen + 1);
 
     }
 
@@ -80,22 +99,19 @@ public class Pulverizador3000 extends Robot {
                 turnGunLeft(70);
                 break;
             case 6:
-                doNothing();
-                break;
-            case 7:
                 turnRadarLeft(30);
                 break;
-            case 8:
+            case 7:
                 turnRadarRight(50);
                 break;
-            case 9:
+            case 8:
                 turnLeft(50);
                 break;
-            case 10:
+            case 9:
                 turnRight(50);
                 break;
             default:
-                fire(2);
+                doNothing();
         }
     }
 
@@ -113,7 +129,6 @@ public class Pulverizador3000 extends Robot {
         while (true) {
             for (int i = 0; i < run.length(); i++) {
                 realizaAccion(run.charAt(i) - 48);
-                
             }
         }
     }
