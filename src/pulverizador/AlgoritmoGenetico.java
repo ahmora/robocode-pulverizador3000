@@ -1,11 +1,15 @@
 package pulverizador;
 
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Alejandro Hernandez Mora
@@ -30,70 +34,48 @@ public class AlgoritmoGenetico {
         this.p_cruza = p_cruza;
         this.resultadosPromedio = this.resultadosBest = "";
     }
-    
-    public Individuo[] generaPoblacion(){
+
+    public Individuo[] generaPoblacion() {
         Individuo[] poblacion = new Individuo[n];
         for (int i = 0; i < n; i++) {
-            poblacion[i]=new Individuo();
+            poblacion[i] = new Individuo();
         }
         return poblacion;
     }
-    
-    public void escribePoblacion(String nombreDelArchivo, Individuo[] poblacion) throws FileNotFoundException{
+
+    public void escribePoblacion(String nombreDelArchivo, Individuo[] poblacion) throws FileNotFoundException {
         PrintWriter pw = new PrintWriter(nombreDelArchivo);
-        String s="";
+        String s = "";
         for (int i = 0; i < n; i++) {
-            s+=poblacion[i]+"\n";
+            s += poblacion[i] + "\n";
         }
         pw.write(s);
         pw.close();
     }
 
-    public int calculaLongitud(double a, double b, int precision) {
-        double temp = a;
-        precision = (int) Math.pow(10, precision);
-        if (a > b) {
-            a = b;
-            b = temp;
+    public Individuo[] leePoblacion(String nombreDelArchivo) {
+        Individuo[] poblacion = new Individuo[n];
+        try {
+            Scanner scan = new Scanner(new FileReader(nombreDelArchivo));
+            for (int i = 0; i < n; i++) {
+                poblacion[i] = new Individuo(scan.nextLine());
+
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AlgoritmoGenetico.class.getName()).log(Level.SEVERE, null, ex);
         }
-        double rango = b - a;
-        int valores = (int) (rango * precision);
-        int digitos = 0;
-        long aux = 1;
-        while (aux < valores) {
-            aux = aux << 1;
-            digitos++;
-        }
-        return digitos;
+        return poblacion;
     }
 
-    public double[] construyeRangos() {
-        double[] rangos = new double[2];
-        double rango = r.nextDouble() * 15;
-        rangos[0] = -rango;
-        rango = r.nextDouble() * 15;
-        rangos[1] = rango;
-        /*System.out.print(rangos[i][0] + "  ");
-         System.out.println(rangos[i][1]);*/
+    public Individuo[] conviertePoblacion(String pob) {
+        Individuo[] poblacion = new Individuo[n];
+        String[] aux = pob.split("\n");
+        for (int i = 0; i < n; i++) {
+            poblacion[i] = new Individuo(aux[i]);
 
-        return rangos;
-    }
-
-    /**
-     * Calcula el fitness acumulado de cada individuo
-     *
-     * @param poblacion la poblacion con la que trabajara la funcion
-     * @return un arreglo con el tirness acumulado en cada espacio para cada
-     * individuo
-     */
-    public double[] fitnessAcumulado(Individuo[] poblacion) {
-        double suma_acumulada = 0;
-        double[] fitnessAc = new double[poblacion.length];
-        for (int i = 0; i < poblacion.length; i++) {
-            suma_acumulada += poblacion[i].getFitness();
-            fitnessAc[i] = suma_acumulada;
         }
-        return fitnessAc;
+        return poblacion;
     }
 
     //Inicio de los metodos de seleccion
@@ -126,8 +108,6 @@ public class AlgoritmoGenetico {
         return nueva_poblacion;
 
     }
-
-    
 
     /**
      * Metodo del 4 torneo para la cruza
@@ -181,28 +161,6 @@ public class AlgoritmoGenetico {
         return nueva_poblacion;
     }
 
-    /**
-     * Metodo de la ruleta para la cruza
-     *
-     * @param poblacion
-     * @return
-     */
-    public Individuo[] seleccionRuleta(Individuo[] poblacion) {
-        Individuo[] nueva_poblacion = new Individuo[n];
-        double[] f_acc = fitnessAcumulado(poblacion);
-        double f_acc_total = f_acc[n - 1];
-        for (int i = 0; i < n; i++) {
-            f_acc[i] /= f_acc_total;
-        }
-
-        for (int i = 0; i < n; i++) {
-            nueva_poblacion[i] = poblacion[buscaFitnessAcc(r.nextDouble(), f_acc)];
-        }
-
-        return nueva_poblacion;
-    }
-
-   
     //Inicio de los metodos auxiliares para los de cruza
     /**
      * Metodo que muta a la poblacion se gun su p_mutacion
@@ -210,69 +168,11 @@ public class AlgoritmoGenetico {
      * @param poblacion
      */
     public void mutacionUniforme(Individuo[] poblacion) {
-        int cuantos = (int) (p_mutacion * 100 * n);
+        int cuantos = (int) (p_mutacion * n);
         while (cuantos > 0) {
             poblacion[r.nextInt(n)].mutar();
             cuantos--;
         }
-    }
-
-    /**
-     * MEtodo que calcula el fitness promedio
-     *
-     * @param poblacion
-     * @return
-     */
-    public double fitnessPromedio(Individuo[] poblacion) {
-        double[] ac = fitnessAcumulado(poblacion);
-        return ac[poblacion.length - 1] / poblacion.length;
-    }
-
-    /**
-     * Metodo que calcula la distancia entre dos indivduos (Segun su evaluacion)
-     *
-     * @param eval
-     * @param eval_optima
-     * @return
-     */
-    public double distancia(double eval, double eval_optima) {
-        return Math.abs(eval_optima - eval);
-    }
-
-    /**
-     * Metodo que calcula la distancia promedio de la poblacion a una evaluacion
-     * especifica
-     *
-     * @param poblacion
-     * @param optimo
-     * @return
-     */
-    public double distanciaPromedio(Individuo[] poblacion, double optimo) {
-        double promedio = 0;
-        for (int i = 0; i < n; i++) {
-            promedio += distancia(poblacion[i].getFitness(), optimo);
-        }
-        promedio /= n;
-        return promedio;
-    }
-
-    /**
-     * Metodo que calcula al iesimo elemento con el fitness acumulado que
-     * buscamos
-     *
-     * @param fitness_goal
-     * @param fitness_acc
-     * @return
-     */
-    public int buscaFitnessAcc(double fitness_goal, double[] fitness_acc) {
-        for (int i = 0; i < fitness_acc.length - 1; i++) {
-            if (fitness_acc[i] < fitness_goal && fitness_goal < fitness_acc[i + 1]) {
-                //System.out.println(i + "   " + fitness_acc[i]);
-                return i;
-            }
-        }
-        return fitness_acc.length - 1;
-
     }
 
     public Individuo[] elitismoK(Individuo[] poblacion, Individuo[] mejores, int k) {
@@ -285,7 +185,14 @@ public class AlgoritmoGenetico {
         for (int i = k - 1; i >= 0; i--) {
             ind_p = poblacion[p];
             ind_m = mejores[m];
-            if (i == k - 1) {
+            if (p < 0 ) {
+                nuevos[i] = ind_m;
+                m--;
+
+            } else if (m < 0) {
+                nuevos[i] = ind_p;
+                p--;
+            } else {
                 if (ind_p.compareTo(ind_m) == 1) {
                     nuevos[i] = ind_p;
                     p--;
@@ -293,58 +200,27 @@ public class AlgoritmoGenetico {
                     nuevos[i] = ind_m;
                     m--;
                 }
-            } else {
-                if (p < 0 || Arrays.binarySearch(nuevos, i + 1, k - 1, ind_m) < 0) {
-                    nuevos[i] = ind_m;
-                    m--;
 
-                } else if (m < 0 || Arrays.binarySearch(nuevos, i + 1, k - 1, ind_p) < 0) {
-                    nuevos[i] = ind_p;
-                    p--;
-                } else {
-                    nuevos[i] = ind_p;
-                    p--;
-                }
             }
-        }
 
+        }
         return nuevos;
     }
     //FIN de los metodos auxiliares para los de cruza
 
-
-    public Individuo[][] agVasconcelos(Individuo[] poblacion, int generaciones, int tipoCruza) {
-        Individuo[] mejores = copiaPoblacion(poblacion, n);
+    public Individuo[][] agVasconcelos(Individuo[] poblacion, Individuo[] mejores) {
         //System.out.println("Poblacion Inicial:");
         //imprimePoblacion(poblacion, n);
-        double fitness_promedio, mejor_fitness, fitness_promedio_elitista, mejor_fitness_elitista;
-
-        for (int i = 0; i < generaciones; i++) {
-            poblacion = seleccionVasconcelos(poblacion);
-            mejores = elitismoK(poblacion, mejores, n);
-            mutacionUniforme(poblacion);
-
-            Arrays.sort(poblacion);
-            Arrays.sort(mejores);
-            fitness_promedio = fitnessPromedio(poblacion);
-            fitness_promedio_elitista = fitnessPromedio(mejores);
-            mejor_fitness = poblacion[n - 1].fitness;
-            mejor_fitness_elitista = mejores[n - 1].fitness;
-
-            resultadosPromedio += String.format("%.12f", fitness_promedio);
-            resultadosPromedio += i == generaciones - 1 ? "" : ",";
-
-            resultadosBest += String.format("%.12f", mejor_fitness);
-            resultadosBest += i == generaciones - 1 ? "" : ",";
-
-            //imprimePoblacion((Individuo[]) poblacion, n);
-        }
-
+        poblacion = seleccionVasconcelos(poblacion);
+        mejores = elitismoK(poblacion, mejores, n);
+        mutacionUniforme(poblacion);
+        Arrays.sort(poblacion);
+        Arrays.sort(mejores);
+        //imprimePoblacion((Individuo[]) poblacion, n);
         //System.out.println("Ultima Poblacion");
         //imprimePoblacion(poblacion, n);
         //System.out.println("Mejores: " + n + " individuos");
         //imprimePoblacion(mejores, n);
-
         //System.out.println(resultados);
         Individuo[][] r = {poblacion, mejores};
         return r;
@@ -384,6 +260,4 @@ public class AlgoritmoGenetico {
 
     }
 
-    
-    
 }

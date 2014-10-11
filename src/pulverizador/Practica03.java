@@ -70,61 +70,74 @@ public class Practica03 {
     }
 
     public static void main(String[] args) {
-        double p_cruza = 0.3, p_mutacion = 0.05;
+        double p_cruza = 1, p_mutacion = 0.1;
         AlgoritmoGenetico ag = new AlgoritmoGenetico(100, p_cruza, p_mutacion);
-        
-        /*Individuo[] poblacion =ag.generaPoblacion();
-        try {
-            ag.escribePoblacion("Generacion.txt", poblacion);
-            System.out.println("Hola");
-            } catch (FileNotFoundException ex) {
-            Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-            
+        Individuo[][] generacion_y_elitismo;
+        Individuo[] poblacion, mejores;
+        poblacion = ag.leePoblacion("Generacion.txt");
+        mejores = ag.leePoblacion("Mejores.txt");
+
+        //Inicio de ciclo de batallas(una generacion)
+        int generaciones=0;
+        while(generaciones<5){
+            generacion_y_elitismo = ag.agVasconcelos(poblacion, mejores);
+            poblacion = generacion_y_elitismo[0];
             int batallas = 0;
             String resultados = "";
             while (batallas < 25) {
-            // Disable log messages from Robocode
-            RobocodeEngine.setLogMessagesEnabled(false);
-            
-            // Create the RobocodeEngine
-            //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
-            RobocodeEngine engine = new RobocodeEngine(new java.io.File("/home/alex/robocode")); // Run from C:/Robocode
-            
-            // Add our own battle listener to the RobocodeEngine 
-            engine.addBattleListener(new BattleObserver());
+                // Disable log messages from Robocode
+                RobocodeEngine.setLogMessagesEnabled(false);
 
-            // Show the Robocode battle view
-            engine.setVisible(false);
+            // Create the RobocodeEngine
+                //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
+                RobocodeEngine engine = new RobocodeEngine(new java.io.File("/home/alex/robocode")); // Run from C:/Robocode
+
+                // Add our own battle listener to the RobocodeEngine 
+                engine.addBattleListener(new BattleObserver());
+
+                // Show the Robocode battle view
+                engine.setVisible(false);
+
+                try {
+                    acomodaArchivos((batallas * 4));
+
+                    // Setup the battle specification
+                    int numberOfRounds = 5;
+                    BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
+                    RobotSpecification[] selectedRobots = engine.getLocalRepository("pulverizador.Pulverizador3002*,pulverizador.Pulverizador3003*,"
+                            + "pulverizador.Pulverizador3001*,pulverizador.Pulverizador3000*");
+
+                    BattleSpecification battleSpec = new BattleSpecification(numberOfRounds, battlefield, selectedRobots);
+
+                    // Run our specified battle and let it run till it is over
+                    engine.runBattle(battleSpec, true); // waits till the battle finishes
+
+                    resultados += getResults();
+                } catch (IOException ioe) {
+                    Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ioe);
+                }
+                batallas++;
+
+                // Cleanup our RobocodeEngine
+                engine.close();
+            }
+            poblacion = ag.conviertePoblacion(resultados);
+            
+            mejores = generacion_y_elitismo[1];
 
             try {
-            acomodaArchivos((batallas * 4));
-            
-            // Setup the battle specification
-            int numberOfRounds = 5;
-            BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
-            RobotSpecification[] selectedRobots = engine.getLocalRepository("pulverizador.Pulverizador3002*,pulverizador.Pulverizador3003*,"
-            + "pulverizador.Pulverizador3001*,pulverizador.Pulverizador3000*");
-            
-            BattleSpecification battleSpec = new BattleSpecification(numberOfRounds, battlefield, selectedRobots);
-            
-            // Run our specified battle and let it run till it is over
-            engine.runBattle(battleSpec, true); // waits till the battle finishes
-            
-            resultados += getResults();
-            } catch (IOException ioe) {
-            Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ioe);
+                ag.escribePoblacion("Generacion.txt", poblacion);
+                ag.escribePoblacion("Mejores.txt", mejores);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ex);
             }
-            batallas++;
-            System.out.println(resultados);
-
-            // Cleanup our RobocodeEngine
-            engine.close();
-            }
-            // Make sure that the Java VM is shut down properly
-            System.exit(0);
-            
+            generaciones++;
+            System.out.println("********************** GENERACION "+generaciones+" TERMINADA **********************");
+        }//Fin de un ciclo de batallas(una generacion)
         
+        // Make sure that the Java VM is shut down properly
+        System.exit(0);
+
     }
 }
 

@@ -29,11 +29,15 @@ public class Individuo implements Comparable {
     }
     
     public Individuo(String individuo) {
-        String[] vector = individuo.split(",");
+        String [] inicial= individuo.split("&");
+        String ind=inicial[0];
+        fitness=Double.parseDouble(inicial[1]);
+        String[] vector = ind.split(",");
         parametros= new String[35];
         this.acciones = vector[0];
         for (int i = 0; i < parametros.length; i++) {
             parametros[i] = vector[i + 1];
+            
         }
     }
     
@@ -118,7 +122,7 @@ public class Individuo implements Comparable {
             s+=parametros[i];
             s+= i==34? "":",";
         }
-        return acciones+s;
+        return acciones+s+"&"+fitness;
     }
     public boolean equalsTo(Individuo a){
         int comp=this.acciones.compareTo(a.acciones);

@@ -45,7 +45,9 @@ public class Pulverizador3000 extends Robot {
         try {
             in = new Scanner(new FileReader("individuo.txt"));
             line = in.nextLine();
-            String [] vector=line.split(",");
+            String [] vector=line.split("&");
+            line=vector[0];
+            vector=line.split(",");
             individuo= vector[0];
             for (int i = 0; i < parametros.length; i++) {
                 parametros[i]= Double.parseDouble(vector[i+1]);
@@ -53,7 +55,7 @@ public class Pulverizador3000 extends Robot {
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Pulverizador3000.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(line);
+       
 
     }
 
@@ -187,7 +189,12 @@ public class Pulverizador3000 extends Robot {
         PrintWriter pw;
         try {
             pw = new PrintWriter(new FileWriter("results.txt"));
-            individuo =individuo + "|" + score;
+            String s = ",";
+            for (int i = 0; i < 35; i++) {
+                s += parametros[i];
+                s += i == 34 ? "" : ",";
+            }
+            individuo =individuo +s+ "&" + score;
             pw.write(individuo);
             pw.close();
         } catch (IOException ex) {
