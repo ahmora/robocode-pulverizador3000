@@ -201,7 +201,7 @@ public class Pulverizador3000 extends Robot {
         PrintWriter pw;
         try {
             pw = new PrintWriter(new FileWriter("results.txt"));
-            individuo = individuo + "," + score;
+            individuo =individuo + "|" + score;
             pw.write(individuo);
             pw.close();
         } catch (IOException ex) {

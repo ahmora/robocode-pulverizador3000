@@ -53,16 +53,16 @@ public class Practica03 {
 
     public static String getResults() throws FileNotFoundException {
         String resultados = "";
-        Scanner scan = new Scanner(new FileReader("individuo.txt"));
+        Scanner scan = new Scanner(new FileReader("results.txt"));
         resultados += scan.nextLine() + "\n";
 
-        scan = new Scanner(new FileReader("individuo2.txt"));
+        scan = new Scanner(new FileReader("results2.txt"));
         resultados += scan.nextLine() + "\n";
 
-        scan = new Scanner(new FileReader("individuo3.txt"));
+        scan = new Scanner(new FileReader("results3.txt"));
         resultados += scan.nextLine() + "\n";
 
-        scan = new Scanner(new FileReader("individuo4.txt"));
+        scan = new Scanner(new FileReader("results4.txt"));
         resultados += scan.nextLine() + "\n";
 
         scan.close();

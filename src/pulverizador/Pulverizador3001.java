@@ -36,7 +36,7 @@ public class Pulverizador3001 extends Robot {
         parametros = new double[35];
         readIndividuo();
         llenaAcciones();
-        //setBodyColor(Color.blue);
+        
     }
 
     public void readIndividuo() {
@@ -129,7 +129,7 @@ public class Pulverizador3001 extends Robot {
      */
     @Override
     public void run() {
-        setBodyColor(Color.red);
+        setBodyColor(Color.blue);
         while (true) {
             for (int i = 0; i < run.length(); i++) {
                 realizaAccion(run.charAt(i) - 48, parametros[i]);
@@ -201,7 +201,7 @@ public class Pulverizador3001 extends Robot {
         PrintWriter pw;
         try {
             pw = new PrintWriter(new FileWriter("results2.txt"));
-            individuo = individuo + "," + score;
+            individuo = individuo + "|" + score;
             pw.write(individuo);
             pw.close();
         } catch (IOException ex) {
