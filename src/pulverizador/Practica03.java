@@ -34,17 +34,17 @@ public class Practica03 {
         pw.write(aux);
         pw.close();
 
+        pw = new PrintWriter(new FileWriter("individuo1.txt"));
+        aux = scan.nextLine();
+        pw.write(aux);
+        pw.close();
+
         pw = new PrintWriter(new FileWriter("individuo2.txt"));
         aux = scan.nextLine();
         pw.write(aux);
         pw.close();
 
         pw = new PrintWriter(new FileWriter("individuo3.txt"));
-        aux = scan.nextLine();
-        pw.write(aux);
-        pw.close();
-
-        pw = new PrintWriter(new FileWriter("individuo4.txt"));
         aux = scan.nextLine();
         pw.write(aux);
         pw.close();
@@ -56,13 +56,13 @@ public class Practica03 {
         Scanner scan = new Scanner(new FileReader("results.txt"));
         resultados += scan.nextLine() + "\n";
 
+        scan = new Scanner(new FileReader("results1.txt"));
+        resultados += scan.nextLine() + "\n";
+
         scan = new Scanner(new FileReader("results2.txt"));
         resultados += scan.nextLine() + "\n";
 
         scan = new Scanner(new FileReader("results3.txt"));
-        resultados += scan.nextLine() + "\n";
-
-        scan = new Scanner(new FileReader("results4.txt"));
         resultados += scan.nextLine() + "\n";
 
         scan.close();
@@ -72,16 +72,25 @@ public class Practica03 {
     public static void main(String[] args) {
         double p_cruza = 0.3, p_mutacion = 0.05;
         AlgoritmoGenetico ag = new AlgoritmoGenetico(100, p_cruza, p_mutacion);
-        int batallas = 0;
-        String resultados = "";
-        while (batallas < 25) {
+        
+        /*Individuo[] poblacion =ag.generaPoblacion();
+        try {
+            ag.escribePoblacion("Generacion.txt", poblacion);
+            System.out.println("Hola");
+            } catch (FileNotFoundException ex) {
+            Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+            
+            int batallas = 0;
+            String resultados = "";
+            while (batallas < 25) {
             // Disable log messages from Robocode
             RobocodeEngine.setLogMessagesEnabled(false);
-
-        // Create the RobocodeEngine
+            
+            // Create the RobocodeEngine
             //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
             RobocodeEngine engine = new RobocodeEngine(new java.io.File("/home/alex/robocode")); // Run from C:/Robocode
-
+            
             // Add our own battle listener to the RobocodeEngine 
             engine.addBattleListener(new BattleObserver());
 
@@ -89,32 +98,33 @@ public class Practica03 {
             engine.setVisible(false);
 
             try {
-                acomodaArchivos((batallas * 4));
-
-                // Setup the battle specification
-                int numberOfRounds = 5;
-                BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
-                RobotSpecification[] selectedRobots = engine.getLocalRepository("pulverizador.Pulverizador3002*,pulverizador.Pulverizador3003*,"
-                        + "pulverizador.Pulverizador3001*,pulverizador.Pulverizador3000*");
-
-                BattleSpecification battleSpec = new BattleSpecification(numberOfRounds, battlefield, selectedRobots);
-
-                // Run our specified battle and let it run till it is over
-                engine.runBattle(battleSpec, true); // waits till the battle finishes
-
-                resultados += getResults();
+            acomodaArchivos((batallas * 4));
+            
+            // Setup the battle specification
+            int numberOfRounds = 5;
+            BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
+            RobotSpecification[] selectedRobots = engine.getLocalRepository("pulverizador.Pulverizador3002*,pulverizador.Pulverizador3003*,"
+            + "pulverizador.Pulverizador3001*,pulverizador.Pulverizador3000*");
+            
+            BattleSpecification battleSpec = new BattleSpecification(numberOfRounds, battlefield, selectedRobots);
+            
+            // Run our specified battle and let it run till it is over
+            engine.runBattle(battleSpec, true); // waits till the battle finishes
+            
+            resultados += getResults();
             } catch (IOException ioe) {
-                Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ioe);
+            Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ioe);
             }
             batallas++;
             System.out.println(resultados);
 
             // Cleanup our RobocodeEngine
             engine.close();
-        }
-        // Make sure that the Java VM is shut down properly
-        System.exit(0);
-
+            }
+            // Make sure that the Java VM is shut down properly
+            System.exit(0);
+            
+        
     }
 }
 

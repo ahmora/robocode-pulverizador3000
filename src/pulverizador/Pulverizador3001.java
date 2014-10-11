@@ -43,10 +43,9 @@ public class Pulverizador3001 extends Robot {
         Scanner in;
         String line = "";
         try {
-            in = new Scanner(new FileReader("individuo2.txt"));
+            in = new Scanner(new FileReader("individuo1.txt"));
             line = in.nextLine();
             String [] vector=line.split(",");
-            System.out.println(vector.length);
             individuo= vector[0];
             for (int i = 0; i < parametros.length; i++) {
                 parametros[i]= Double.parseDouble(vector[i+1]);
@@ -60,33 +59,20 @@ public class Pulverizador3001 extends Robot {
 
     public void llenaAcciones() {
         String aux = individuo.substring(0);
-        int longitud_gen = aux.charAt(0) - 48;
         
-        run = aux.substring(1, longitud_gen + 1);
-        aux = aux.substring(longitud_gen + 1);
-        longitud_gen = aux.charAt(0) - 48;
+        run = aux.substring(0, 6);
 
-        onScannedRobot = aux.substring(1, longitud_gen + 1);
-        aux = aux.substring(longitud_gen + 1);
-        longitud_gen = aux.charAt(0) - 48;
+        onScannedRobot = aux.substring(6, 11);
 
-        onHitByBullet = aux.substring(1, longitud_gen + 1);
-        aux = aux.substring(longitud_gen + 1);
-        longitud_gen = aux.charAt(0) - 48;
+        onHitByBullet = aux.substring(11, 16);
 
-        onHitWall = aux.substring(1, longitud_gen + 1);
-        aux = aux.substring(longitud_gen + 1);
-        longitud_gen = aux.charAt(0) - 48;
+        onHitWall = aux.substring(16, 21);
 
-        onBulletHit = aux.substring(1, longitud_gen + 1);
-        aux = aux.substring(longitud_gen + 1);
-        longitud_gen = aux.charAt(0) - 48;
+        onBulletHit = aux.substring(21, 26);
 
-        onBulletMissed = aux.substring(1, longitud_gen + 1);
-        aux = aux.substring(longitud_gen + 1);
-        longitud_gen = aux.charAt(0) - 48;
+        onBulletMissed = aux.substring(26, 31);
 
-        onHitRobot = aux.substring(1, longitud_gen + 1);
+        onHitRobot = aux.substring(31);
 
     }
 
@@ -129,7 +115,7 @@ public class Pulverizador3001 extends Robot {
      */
     @Override
     public void run() {
-        setBodyColor(Color.blue);
+        setBodyColor(Color.red);
         while (true) {
             for (int i = 0; i < run.length(); i++) {
                 realizaAccion(run.charAt(i) - 48, parametros[i]);
@@ -200,8 +186,8 @@ public class Pulverizador3001 extends Robot {
         int score = results.getScore();
         PrintWriter pw;
         try {
-            pw = new PrintWriter(new FileWriter("results2.txt"));
-            individuo = individuo + "|" + score;
+            pw = new PrintWriter(new FileWriter("results1.txt"));
+            individuo =individuo + "|" + score;
             pw.write(individuo);
             pw.close();
         } catch (IOException ex) {

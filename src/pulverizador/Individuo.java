@@ -11,7 +11,7 @@ public class Individuo implements Comparable {
     double fitness;
     String acciones;
     String [] parametros;
-    static int [][] rangos= {{50,500},{50,500},{0,2},{-360,360},{-360,360},{-360,360},{-360,360}};
+    static int [][] rangos= {{50,500},{50,500},{0,5},{-180,180},{-180,180},{-180,180},{-180,180},{-180,180},{-180,180}};
 
     public Individuo(){
         acciones="";
@@ -19,7 +19,7 @@ public class Individuo implements Comparable {
         int accion;
         int a,b;
         for (int i = 0; i < 35; i++) {
-            accion= r.nextInt(7);
+            accion= r.nextInt(9);
             acciones+=accion;
             a=rangos[accion][0];
             b=rangos[accion][1];
@@ -28,9 +28,13 @@ public class Individuo implements Comparable {
         
     }
     
-    public Individuo(String acciones, String parametros) {
-        this.acciones = acciones;
-        this.parametros= parametros.split(",");
+    public Individuo(String individuo) {
+        String[] vector = individuo.split(",");
+        parametros= new String[35];
+        this.acciones = vector[0];
+        for (int i = 0; i < parametros.length; i++) {
+            parametros[i] = vector[i + 1];
+        }
     }
     
     public Individuo(String acciones, String [] parametros) {
@@ -109,7 +113,7 @@ public class Individuo implements Comparable {
     
     @Override 
     public String toString(){
-        String s=acciones+",";
+        String s=",";
         for (int i = 0; i < 35; i++) {
             s+=parametros[i];
             s+= i==34? "":",";
