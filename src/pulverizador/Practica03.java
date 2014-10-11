@@ -79,7 +79,7 @@ public class Practica03 {
 
         //Inicio de ciclo de batallas(una generacion)
         int generaciones=0;
-        while(generaciones<5){
+        while(generaciones<50){
             generacion_y_elitismo = ag.agVasconcelos(poblacion, mejores);
             poblacion = generacion_y_elitismo[0];
             int batallas = 0;
