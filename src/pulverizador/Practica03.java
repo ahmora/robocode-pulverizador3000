@@ -27,11 +27,10 @@ public class Practica03 {
         String aux = "";
         PrintWriter pw = new PrintWriter(new FileWriter("individuo.txt"));
         Scanner scan = new Scanner(new FileReader("Generacion.txt"));
-        while (i < inicio) {
-            scan.nextLine();
+        while (i <= inicio) {
+            aux=scan.nextLine();
             i++;
         }
-        scan.nextLine();
         pw.write(aux);
         pw.close();
 
@@ -55,16 +54,18 @@ public class Practica03 {
     public static String getResults() throws FileNotFoundException {
         String resultados = "";
         Scanner scan = new Scanner(new FileReader("individuo.txt"));
-        resultados += scan.nextLine();
+        resultados += scan.nextLine()+"\n";
 
         scan = new Scanner(new FileReader("individuo2.txt"));
-        resultados += scan.nextLine();
+        resultados += scan.nextLine()+"\n";
 
         scan = new Scanner(new FileReader("individuo3.txt"));
-        resultados += scan.nextLine();
+        resultados += scan.nextLine()+"\n";
 
         scan = new Scanner(new FileReader("individuo4.txt"));
-        resultados += scan.nextLine();
+        resultados += scan.nextLine()+"\n";
+        
+        scan.close();
         return resultados;
     }
 
@@ -86,9 +87,9 @@ public class Practica03 {
         engine.setVisible(false);
         int batallas = 0;
         String resultados = "";
-        while (batallas < 26) {
+        while (batallas < 25) {
             try {
-                    acomodaArchivos((batallas * 4)+1);
+                    acomodaArchivos((batallas * 4));
                 
                 // Setup the battle specification
                 int numberOfRounds = 5;
@@ -106,8 +107,9 @@ public class Practica03 {
                 Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ioe);
             }
             batallas++;
+            System.out.println(resultados);
         }
-        System.out.println(resultados);
+        
         // Cleanup our RobocodeEngine
         engine.close();
 
