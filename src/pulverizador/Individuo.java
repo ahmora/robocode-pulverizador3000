@@ -103,14 +103,13 @@ public class Individuo implements Comparable {
         int i = r.nextInt(35);
         char caracter = (char) (48 + r.nextInt(7));
         acciones = acciones.substring(0, i) + caracter + acciones.substring(i + 1);
-        int j=(i/7)+(i%5);
-        System.out.println(j);
+        int j=i/7;
         parametros[i]=""+((rangos[j][1]-rangos[j][0])*r.nextDouble()+rangos[j][0]);
     }
     
     @Override 
     public String toString(){
-        String s="\n";
+        String s=acciones+",";
         for (int i = 0; i < 35; i++) {
             s+=parametros[i];
             s+= i==34? "":",";

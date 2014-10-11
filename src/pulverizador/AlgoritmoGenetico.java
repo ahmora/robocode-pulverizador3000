@@ -30,6 +30,24 @@ public class AlgoritmoGenetico {
         this.p_cruza = p_cruza;
         this.resultadosPromedio = this.resultadosBest = "";
     }
+    
+    public Individuo[] generaPoblacion(){
+        Individuo[] poblacion = new Individuo[n];
+        for (int i = 0; i < n; i++) {
+            poblacion[i]=new Individuo();
+        }
+        return poblacion;
+    }
+    
+    public void escribePoblacion(String nombreDelArchivo, Individuo[] poblacion) throws FileNotFoundException{
+        PrintWriter pw = new PrintWriter(nombreDelArchivo);
+        String s="";
+        for (int i = 0; i < n; i++) {
+            s+=poblacion[i]+"\n";
+        }
+        pw.write(s);
+        pw.close();
+    }
 
     public int calculaLongitud(double a, double b, int precision) {
         double temp = a;
