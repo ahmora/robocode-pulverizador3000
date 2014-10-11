@@ -28,7 +28,7 @@ public class Practica03 {
         PrintWriter pw = new PrintWriter(new FileWriter("individuo.txt"));
         Scanner scan = new Scanner(new FileReader("Generacion.txt"));
         while (i <= inicio) {
-            aux=scan.nextLine();
+            aux = scan.nextLine();
             i++;
         }
         pw.write(aux);
@@ -54,17 +54,17 @@ public class Practica03 {
     public static String getResults() throws FileNotFoundException {
         String resultados = "";
         Scanner scan = new Scanner(new FileReader("individuo.txt"));
-        resultados += scan.nextLine()+"\n";
+        resultados += scan.nextLine() + "\n";
 
         scan = new Scanner(new FileReader("individuo2.txt"));
-        resultados += scan.nextLine()+"\n";
+        resultados += scan.nextLine() + "\n";
 
         scan = new Scanner(new FileReader("individuo3.txt"));
-        resultados += scan.nextLine()+"\n";
+        resultados += scan.nextLine() + "\n";
 
         scan = new Scanner(new FileReader("individuo4.txt"));
-        resultados += scan.nextLine()+"\n";
-        
+        resultados += scan.nextLine() + "\n";
+
         scan.close();
         return resultados;
     }
@@ -72,25 +72,25 @@ public class Practica03 {
     public static void main(String[] args) {
         double p_cruza = 0.3, p_mutacion = 0.05;
         AlgoritmoGenetico ag = new AlgoritmoGenetico(100, p_cruza, p_mutacion);
-
-        // Disable log messages from Robocode
-        RobocodeEngine.setLogMessagesEnabled(false);
-
-        // Create the RobocodeEngine
-        //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
-        RobocodeEngine engine = new RobocodeEngine(new java.io.File("/home/alex/robocode")); // Run from C:/Robocode
-
-        // Add our own battle listener to the RobocodeEngine 
-        engine.addBattleListener(new BattleObserver());
-
-        // Show the Robocode battle view
-        engine.setVisible(false);
         int batallas = 0;
         String resultados = "";
         while (batallas < 25) {
+            // Disable log messages from Robocode
+            RobocodeEngine.setLogMessagesEnabled(false);
+
+        // Create the RobocodeEngine
+            //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
+            RobocodeEngine engine = new RobocodeEngine(new java.io.File("/home/alex/robocode")); // Run from C:/Robocode
+
+            // Add our own battle listener to the RobocodeEngine 
+            engine.addBattleListener(new BattleObserver());
+
+            // Show the Robocode battle view
+            engine.setVisible(false);
+
             try {
-                    acomodaArchivos((batallas * 4));
-                
+                acomodaArchivos((batallas * 4));
+
                 // Setup the battle specification
                 int numberOfRounds = 5;
                 BattlefieldSpecification battlefield = new BattlefieldSpecification(800, 600); // 800x600
@@ -103,16 +103,15 @@ public class Practica03 {
                 engine.runBattle(battleSpec, true); // waits till the battle finishes
 
                 resultados += getResults();
-            } catch( IOException ioe){
+            } catch (IOException ioe) {
                 Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ioe);
             }
             batallas++;
             System.out.println(resultados);
-        }
-        
-        // Cleanup our RobocodeEngine
-        engine.close();
 
+            // Cleanup our RobocodeEngine
+            engine.close();
+        }
         // Make sure that the Java VM is shut down properly
         System.exit(0);
 

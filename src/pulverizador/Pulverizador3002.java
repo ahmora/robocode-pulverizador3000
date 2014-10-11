@@ -43,7 +43,7 @@ public class Pulverizador3002 extends Robot {
         Scanner in;
         String line = "";
         try {
-            in = new Scanner(new FileReader("individuo2.txt"));
+            in = new Scanner(new FileReader("individuo3.txt"));
             line = in.nextLine();
             String [] vector=line.split(",");
             System.out.println(vector.length);
