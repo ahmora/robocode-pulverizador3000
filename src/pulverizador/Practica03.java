@@ -70,8 +70,17 @@ public class Practica03 {
     }
 
     public static void main(String[] args) {
-        double p_cruza = 1, p_mutacion = 0.1;
+        double p_cruza = 1, p_mutacion = 0.2;
         AlgoritmoGenetico ag = new AlgoritmoGenetico(100, p_cruza, p_mutacion);
+        /*//Codigo para generar y escribir poblacion aleatoria
+        Individuo [] poblacion=ag.generaPoblacion();
+        try {
+            ag.escribePoblacion("Generacion.txt", poblacion);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ex);
+        }//Fin de código para generar poblacion aleatoria
+        */
+        
         Individuo[][] generacion_y_elitismo;
         Individuo[] poblacion, mejores;
         poblacion = ag.leePoblacion("Generacion.txt");
