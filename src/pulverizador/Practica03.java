@@ -72,7 +72,8 @@ public class Practica03 {
     public static void main(String[] args) {
         double p_cruza = 1, p_mutacion = 0.2;
         AlgoritmoGenetico ag = new AlgoritmoGenetico(100, p_cruza, p_mutacion);
-        /*//Codigo para generar y escribir poblacion aleatoria
+        /*
+        //Codigo para generar y escribir poblacion aleatoria
         Individuo [] poblacion=ag.generaPoblacion();
         try {
             ag.escribePoblacion("Generacion.txt", poblacion);

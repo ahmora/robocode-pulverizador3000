@@ -46,6 +46,7 @@ public class AlgoritmoGenetico {
     public void escribePoblacion(String nombreDelArchivo, Individuo[] poblacion) throws FileNotFoundException {
         PrintWriter pw = new PrintWriter(nombreDelArchivo);
         String s = "";
+        Arrays.sort(poblacion);
         for (int i = 0; i < n; i++) {
             s += poblacion[i] + "\n";
         }
