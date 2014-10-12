@@ -88,7 +88,7 @@ public class Practica03 {
 
         //Inicio de ciclo de batallas(una generacion)
         int generaciones=0;
-        while(generaciones<50){
+        while(generaciones<6){
             generacion_y_elitismo = ag.agVasconcelos(poblacion, mejores);
             poblacion = generacion_y_elitismo[0];
             int batallas = 0;
@@ -99,7 +99,7 @@ public class Practica03 {
 
             // Create the RobocodeEngine
                 //   RobocodeEngine engine = new RobocodeEngine(); // Run from current working directory
-                RobocodeEngine engine = new RobocodeEngine(new java.io.File("/home/alex/robocode")); // Run from C:/Robocode
+                RobocodeEngine engine = new RobocodeEngine(new java.io.File("/home/luis/robocode")); // Run from C:/Robocode
 
                 // Add our own battle listener to the RobocodeEngine 
                 engine.addBattleListener(new BattleObserver());

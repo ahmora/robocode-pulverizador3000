@@ -78,7 +78,7 @@ public class Pulverizador3003 extends Robot {
 
     }
 
-    public void realizaAccion(int accion, double parametro) {
+    public void realizaAccion(int accion, double parametro,Object e,int opcion) {
         switch (accion) {
             case 0:
                 ahead(parametro);
@@ -90,22 +90,166 @@ public class Pulverizador3003 extends Robot {
                 fire(parametro);
                 break;
             case 3:
-                turnLeft(parametro);
+                switch(opcion){
+                    
+                    case 1:
+                        ScannedRobotEvent t1 = (ScannedRobotEvent)e;
+                        if(parametro < 0){
+                            turnLeft(t1.getBearing());
+                        }else{
+                            turnLeft(parametro);
+                        }
+                        break;
+                        
+                    case 2:
+                        HitByBulletEvent t2 = (HitByBulletEvent)e;
+                        if(parametro < 0){
+                            turnLeft(t2.getBearing());
+                        }else{
+                            turnLeft(parametro);
+                        }
+                        break;
+                        
+                    default:
+                        turnLeft(parametro);
+                        break;
+                }
+                //turnLeft(parametro);
                 break;
             case 4:
-                turnRight(parametro);
+                switch(opcion){
+                    
+                    case 1:
+                        ScannedRobotEvent t1 = (ScannedRobotEvent)e;
+                        if(parametro < 0){
+                            turnRight(t1.getBearing());
+                        }else{
+                            turnRight(parametro);
+                        }
+                        break;
+                        
+                    case 2:
+                        HitByBulletEvent t2 = (HitByBulletEvent)e;
+                        if(parametro < 0){
+                            turnRight(t2.getBearing());
+                        }else{
+                            turnRight(parametro);
+                        }
+                        break;
+                        
+                    default:
+                        turnRight(parametro);
+                        break;
+                }
+                //turnRight(parametro);
                 break;
             case 5:
-                turnRadarLeft(parametro);
+                switch(opcion){
+                    
+                    case 1:
+                        ScannedRobotEvent t1 = (ScannedRobotEvent)e;
+                        if(parametro < 0){
+                            turnRadarLeft(t1.getBearing());
+                        }else{
+                            turnRadarLeft(parametro);
+                        }
+                        break;
+                        
+                    case 2:
+                        HitByBulletEvent t2 = (HitByBulletEvent)e;
+                        if(parametro < 0){
+                            turnRadarLeft(t2.getBearing());
+                        }else{
+                            turnRadarLeft(parametro);
+                        }
+                        break;
+                        
+                    default:
+                        turnRadarLeft(parametro);
+                        break;
+                }
+                //turnRadarLeft(parametro);
                 break;
             case 6:
-                turnRadarRight(parametro);
+                 switch(opcion){
+                    
+                    case 1:
+                        ScannedRobotEvent t1 = (ScannedRobotEvent)e;
+                        if(parametro < 0){
+                            turnRadarRight(t1.getBearing());
+                        }else{
+                            turnRadarRight(parametro);
+                        }
+                        break;
+                        
+                    case 2:
+                        HitByBulletEvent t2 = (HitByBulletEvent)e;
+                        if(parametro < 0){
+                            turnRadarRight(t2.getBearing());
+                        }else{
+                            turnRadarRight(parametro);
+                        }
+                        break;
+                        
+                    default:
+                        turnRadarRight(parametro);
+                        break;
+                }
+                //turnRadarRight(parametro);
                 break;
             case 7:
-                turnGunLeft(parametro);
+                switch(opcion){
+                    
+                    case 1:
+                        ScannedRobotEvent t1 = (ScannedRobotEvent)e;
+                        if(parametro < 0){
+                            turnGunLeft(t1.getBearing());
+                        }else{
+                            turnGunLeft(parametro);
+                        }
+                        break;
+                        
+                    case 2:
+                        HitByBulletEvent t2 = (HitByBulletEvent)e;
+                        if(parametro < 0){
+                            turnGunLeft(t2.getBearing());
+                        }else{
+                            turnGunLeft(parametro);
+                        }
+                        break;
+                        
+                    default:
+                        turnGunLeft(parametro);
+                        break;
+                }
+                //turnGunLeft(parametro);
                 break;
             case 8:
-                turnGunRight(parametro);
+                switch(opcion){
+                    
+                    case 1:
+                        ScannedRobotEvent t1 = (ScannedRobotEvent)e;
+                        if(parametro < 0){
+                            turnGunRight(t1.getBearing());
+                        }else{
+                            turnGunRight(parametro);
+                        }
+                        break;
+                        
+                    case 2:
+                        HitByBulletEvent t2 = (HitByBulletEvent)e;
+                        if(parametro < 0){
+                            turnGunRight(t2.getBearing());
+                        }else{
+                            turnGunRight(parametro);
+                        }
+                        break;
+                        
+                    default:
+                        turnGunRight(parametro);
+                        break;
+                }
+                //turnGunRight(parametro);
                 break;
             default:
                 doNothing();
@@ -120,7 +264,7 @@ public class Pulverizador3003 extends Robot {
         setBodyColor(Color.orange);
         while (true) {
             for (int i = 0; i < run.length(); i++) {
-                realizaAccion(run.charAt(i) - 48, parametros[i]);
+                realizaAccion(run.charAt(i) - 48, parametros[i],null,0);
             }
         }
     }
@@ -132,7 +276,7 @@ public class Pulverizador3003 extends Robot {
     public void onScannedRobot(ScannedRobotEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onScannedRobot.length(); i++) {
-            realizaAccion(onScannedRobot.charAt(i) - 48, parametros[i*2]);
+            realizaAccion(onScannedRobot.charAt(i) - 48, parametros[i*2],e,1);
         }
     }
 
@@ -143,7 +287,7 @@ public class Pulverizador3003 extends Robot {
     public void onHitByBullet(HitByBulletEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onHitByBullet.length(); i++) {
-            realizaAccion(onHitByBullet.charAt(i) - 48, parametros[i*3]);
+            realizaAccion(onHitByBullet.charAt(i) - 48, parametros[i*3],e,2);
         }
     }
 
@@ -154,7 +298,7 @@ public class Pulverizador3003 extends Robot {
     public void onHitWall(HitWallEvent e) {
         // Replace the next line with any behavior you would like
         for (int i = 0; i < onHitWall.length(); i++) {
-            realizaAccion(onHitWall.charAt(i) - 48, parametros[i*4]);
+            realizaAccion(onHitWall.charAt(i) - 48, parametros[i*4],e,3);
         }
     }
     
@@ -163,21 +307,21 @@ public class Pulverizador3003 extends Robot {
     @Override
     public void onBulletHit(BulletHitEvent e){
         for (int i = 0; i < onBulletHit.length(); i++) {
-            realizaAccion(onBulletHit.charAt(i) - 48, parametros[i*5]);
+            realizaAccion(onBulletHit.charAt(i) - 48, parametros[i*5],e,4);
         }
     }
     
      @Override
     public void onBulletMissed(BulletMissedEvent e){
         for (int i = 0; i < onBulletMissed.length(); i++) {
-            realizaAccion(onBulletMissed.charAt(i) - 48, parametros[i*6]);
+            realizaAccion(onBulletMissed.charAt(i) - 48, parametros[i*6],e,5);
         }
     }
     
      @Override
     public void onHitRobot(HitRobotEvent e){
         for (int i = 0; i < onHitRobot.length(); i++) {
-            realizaAccion(onHitRobot.charAt(i) - 48, parametros[i*7]);
+            realizaAccion(onHitRobot.charAt(i) - 48, parametros[i*7],e,6);
         }
     }
     
