@@ -70,7 +70,7 @@ public class Practica03 {
     }
 
     public static void main(String[] args) {
-        double p_cruza = 1, p_mutacion = 0.2;
+        double p_cruza = 1, p_mutacion = 0.25;
         AlgoritmoGenetico ag = new AlgoritmoGenetico(100, p_cruza, p_mutacion);
         /*
         //Codigo para generar y escribir poblacion aleatoria
@@ -81,20 +81,20 @@ public class Practica03 {
             Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ex);
         }//Fin de código para generar poblacion aleatoria
         */
-        
+        /*
         Individuo[][] generacion_y_elitismo;
         Individuo[] poblacion, mejores;
         poblacion = ag.leePoblacion("Generacion.txt");
         mejores = ag.leePoblacion("Mejores.txt");
-
+        
         //Inicio de ciclo de batallas(una generacion)
         int generaciones=0;
-        while(generaciones<50){
+        while(generaciones<400){
             generacion_y_elitismo = ag.agVasconcelos(poblacion, mejores);
             poblacion = generacion_y_elitismo[0];
             int batallas = 0;
             String resultados = "";
-            while (batallas < 25) {
+            while (batallas < 25) {*/
                 // Disable log messages from Robocode
                 RobocodeEngine.setLogMessagesEnabled(false);
 
@@ -106,10 +106,10 @@ public class Practica03 {
                 engine.addBattleListener(new BattleObserver());
 
                 // Show the Robocode battle view
-                engine.setVisible(false);
+                engine.setVisible(true);
 
-                try {
-                    acomodaArchivos((batallas * 4));
+                //try {
+                    //acomodaArchivos((batallas * 4));
 
                     // Setup the battle specification
                     int numberOfRounds = 5;
@@ -122,15 +122,15 @@ public class Practica03 {
                     // Run our specified battle and let it run till it is over
                     engine.runBattle(battleSpec, true); // waits till the battle finishes
 
-                    resultados += getResults();
-                } catch (IOException ioe) {
+                    //resultados += getResults();
+                /*} catch (IOException ioe) {
                     Logger.getLogger(Practica03.class.getName()).log(Level.SEVERE, null, ioe);
-                }
-                batallas++;
+                }*/
+                //batallas++;
 
                 // Cleanup our RobocodeEngine
                 engine.close();
-            }
+           /* }
             poblacion = ag.conviertePoblacion(resultados);
             
             mejores = generacion_y_elitismo[1];
@@ -144,7 +144,7 @@ public class Practica03 {
             generaciones++;
             System.out.println("********************** GENERACION "+generaciones+" TERMINADA **********************");
         }//Fin de un ciclo de batallas(una generacion)
-        
+        */
         // Make sure that the Java VM is shut down properly
         System.exit(0);
 

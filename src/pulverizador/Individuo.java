@@ -11,7 +11,7 @@ public class Individuo implements Comparable {
     double fitness;
     String acciones;
     String [] parametros;
-    static int [][] rangos= {{50,500},{50,500},{0,5},{-180,180},{-180,180},{-180,180},{-180,180},{-180,180},{-180,180}};
+    static int [][] rangos= {{100,700},{100,700},{0,5},{0,180},{0,180},{0,180},{0,180},{0,180},{0,180}};
 
     public Individuo(){
         acciones="";
